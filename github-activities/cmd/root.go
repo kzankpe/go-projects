@@ -27,7 +27,8 @@ to quickly create a Cobra application.`,
 		fmt.Println("Running the root command")
 		var respo []helper.Activity
 		respo, _ = helper.GetGithubActivity("kzankpe")
-		fmt.Println(respo)
+		//fmt.Println(respo)
+		helper.DisplayActivity(respo)
 	},
 }
 
