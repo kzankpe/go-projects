@@ -1,0 +1,64 @@
+# This workflow will build a golang project
+
+name: Go-CLI-Build
+
+on:
+  push:
+    paths:
+      - '.github/**'
+      - 'github-activities/**'
+  pull_request:
+    paths:
+      - 'github-activities/**'
+      - '.github/**'  
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      fullsemver: ${{ steps.get_version.outputs.fullSemVer }}
+      semVer: ${{ steps.get_version.outputs.MajorMinorPatch }}
+    steps:
+        - uses: actions/checkout@v4
+          name: Checkout
+          with:
+            fetch-depth: 0
+        - uses: gittools/actions/gitversion/setup@v0
+          name: Install Giversion 5.x
+          with:
+            versionSpec: '5.x'
+        - uses: gittools/actions/gitversion/execute@v0
+          id: get_version
+          name: Determine Version
+          with:
+            useConfigFile: true
+            configFilePath: '.gitversion'
+        
+
+  build:
+    runs-on: ubuntu-latest
+    needs: version
+    env:
+      semVer: ${{ needs.version.outputs.semVer }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23.x'
+
+    - name: Install dependencies
+      run: go get .
+      working-directory: github-activities
+        
+    - name: Build
+      run: go build -o task-cli
+      working-directory: github-activities
+    - name: Display current version
+      run: |
+        echo "Version env: ${{env.semVer}}"
+        echo "Version local: ${{ needs.version.outputs.semVer }}"
+    #- name: Test
+    #  run: go test -v ./...
+    #  working-directory: github-activities
