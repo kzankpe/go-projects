@@ -5,11 +5,12 @@ name: Go-CLI-Build
 on:
   push:
     paths:
+      - '.github/**'
       - 'github-activities/**'
   pull_request:
     paths:
       - 'github-activities/**'
-
+      - '.github/**'  
 
 jobs:
   version:
