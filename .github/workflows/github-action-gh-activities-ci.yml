@@ -50,12 +50,15 @@ jobs:
 
     - name: Install dependencies
       run: go get .
+      working-directory: github-activities
         
     - name: Build
       run: go build -o task-cli
+      working-directory: github-activities
     - name: Display current version
       run: |
         echo "Version env: ${{env.semVer}}"
         echo "Version local: ${{ needs.version.outputs.semVer }}"
     #- name: Test
     #  run: go test -v ./...
+    #  working-directory: github-activities
