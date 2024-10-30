@@ -51,13 +51,13 @@ func DisplayActivity(events []Activity) {
 	for _, event := range events {
 		switch event.Type {
 		case "IssuesEvent":
-			fmt.Printf("%s a new issue in %s\n", event.Payload.Action, event.Repo.Name)
+			fmt.Printf("- %s a new issue in %s\n", event.Payload.Action, event.Repo.Name)
 		case "PullRequestEvent":
-			fmt.Printf("%s a Pull Request in %s\n", event.Payload.Action, event.Repo.Name)
+			fmt.Printf("- %s a Pull Request in %s\n", event.Payload.Action, event.Repo.Name)
 		case "PushEvent":
-			fmt.Printf("Pushed %d commit to %s\n", len(event.Payload.Commits), event.Repo.Name)
+			fmt.Printf("- Pushed %d commit to %s\n", len(event.Payload.Commits), event.Repo.Name)
 		case "CreateEvent":
-			fmt.Printf("Created %s in %s\n", event.Payload.Ref, event.Repo.Name)
+			fmt.Printf("- Created %s in %s\n", event.Payload.Ref, event.Repo.Name)
 		}
 	}
 }
