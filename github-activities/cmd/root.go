@@ -23,10 +23,11 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Running the root command")
+		fmt.Printf("Hello, %s. Find below your recent activities on GitHub:\n", args[0])
 		var respo []helper.Activity
-		respo, _ = helper.GetGithubActivity("kzankpe")
+		respo, _ = helper.GetGithubActivity(args[0])
 		//fmt.Println(respo)
 		helper.DisplayActivity(respo)
 	},
