@@ -46,8 +46,9 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Fprintf(w, "POST request successful")
+	fmt.Fprintf(w, "POST request successful\n")
 	value := r.FormValue("value")
-	//convertfrom := r.FormValue("convertfrom")
-	fmt.Fprintf(w, "Name = %s\n", value)
+	convertfrom := r.FormValue("from")
+	fmt.Fprintf(w, "Value = %s\n", value)
+	fmt.Fprintf(w, "Conversion From = %s\n", convertfrom)
 }
