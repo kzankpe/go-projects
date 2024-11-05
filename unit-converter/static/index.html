@@ -7,5 +7,33 @@
 </head>
 <body>
     <h2>Unit Converter</h2>
+    <div>
+        <form action="/form" method="post">
+            <label for="">Value</label><input name="value" type="text">
+            <label for="from">Convert From</label>
+            <select name="from" id="">
+                <option value="mm">mm</option>
+                <option value="cm">cm</option>
+                <option value="m">m</option>
+                <option value="km">km</option>
+                <option value="inch">inch</option>
+                <option value="feet">feet</option>
+                <option value="yard">yard</option>
+                <option value="miles">miles</option>
+            </select>
+            <label for="to">Convert To</label>
+            <select name="to" id="">
+                <option value="mm">mm</option>
+                <option value="cm">cm</option>
+                <option value="m">m</option>
+                <option value="km">km</option>
+                <option value="inch">inch</option>
+                <option value="feet">feet</option>
+                <option value="yard">yard</option>
+                <option value="miles">miles</option>
+            </select>
+            <input type="submit" value="submit">
+        </form>
+    </div>
 </body>
 </html>
