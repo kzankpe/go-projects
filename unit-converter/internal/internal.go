@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type Request struct {
@@ -47,8 +48,15 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, "POST request successful\n")
-	value := r.FormValue("value")
+	value, err := strconv.ParseFloat(r.FormValue("value"), 64)
+	if err != nil {
+		fmt.Println("Error converting string to float:", err)
+		return
+	}
 	convertfrom := r.FormValue("from")
-	fmt.Fprintf(w, "Value = %s\n", value)
+	convertto := r.FormValue("to")
+	result := Convert(Request{value, convertfrom, convertto})
+	fmt.Fprintf(w, "Value = %f\n", value)
 	fmt.Fprintf(w, "Conversion From = %s\n", convertfrom)
+	fmt.Fprintf(w, "Final result : %f\n", result)
 }
