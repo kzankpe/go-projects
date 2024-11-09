@@ -16,8 +16,8 @@ type Response struct {
 	Result float64 `json:"result"`
 }
 
-func Convert(req Request) Response {
-	fmt.Println("Call Convert function")
+func ConvertLength(req Request) Response {
+	fmt.Println("Call Convert Length function")
 
 	//Convert to meter
 	var res Response
@@ -64,6 +64,41 @@ func Convert(req Request) Response {
 	return Response{}
 }
 
+func ConvertWeigth(r Request) Response {
+	fmt.Println("Call Convert Length function")
+
+	var response Response
+
+	//Convert all input to gram
+	switch r.ConvertFrom {
+	case "g":
+		response = Response{r.Input}
+	case "mg":
+		response = Response{r.Input / 1000}
+	case "kg":
+		response = Response{r.Input * 1000}
+	case "oz":
+		response = Response{r.Input * 28.3495231}
+	case "pd":
+		response = Response{r.Input * 453.59237}
+	}
+
+	// Convert to final unit
+	switch r.ConvertTo {
+	case "g":
+		return response
+	case "mg":
+		return Response{response.Result / 1000}
+	case "kg":
+		return Response{response.Result * 1000}
+	case "oz":
+		return Response{response.Result / 28.3495231}
+	case "pd":
+		return Response{response.Result / 453.59237}
+	}
+	return Response{}
+}
+
 func FormHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -78,7 +113,7 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	convertfrom := r.FormValue("from")
 	convertto := r.FormValue("to")
-	result := Convert(Request{value, convertfrom, convertto})
+	result := ConvertLength(Request{value, convertfrom, convertto})
 	fmt.Println(result)
 	fmt.Fprintf(w, "<h1>Length Conversion Result</h1>")
 	fmt.Fprintf(w, "<h2>Final result : %.3f %s\n</h2>", result.Result, convertto)
