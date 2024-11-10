@@ -99,6 +99,32 @@ func ConvertWeight(r Request) Response {
 	return Response{}
 }
 
+func ConvertTemperature(r Request) Response {
+	fmt.Println("Call Convert Temperature function")
+	var response Response
+
+	// Convert to the celsius
+	switch r.ConvertFrom {
+	case "celsius":
+		response = Response{r.Input}
+	case "fahrenheit":
+		response = Response{((r.Input - 32) * 5) / 9}
+	case "kelvin":
+		response = Response{r.Input - 273.15}
+	}
+
+	//Convert to the final unit
+	switch r.ConvertTo {
+	case "celsius":
+		return Response{response.Result}
+	case "fahrenheit":
+		return Response{((response.Result * 9) / 5) + 32}
+	case "kelvin":
+		return Response{response.Result + 273.15}
+	}
+	return Response{}
+}
+
 func FormHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -121,7 +147,8 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 		result = ConvertLength(Request{value, convertfrom, convertto})
 	case "weight":
 		result = ConvertWeight(Request{value, convertfrom, convertto})
-		//case "":
+	case "temperature":
+		result = ConvertTemperature(Request{value, convertfrom, convertto})
 
 	}
 
