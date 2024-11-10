@@ -64,8 +64,8 @@ func ConvertLength(req Request) Response {
 	return Response{}
 }
 
-func ConvertWeigth(r Request) Response {
-	fmt.Println("Call Convert Length function")
+func ConvertWeight(r Request) Response {
+	fmt.Println("Call Convert Weight function")
 
 	var response Response
 
@@ -88,9 +88,9 @@ func ConvertWeigth(r Request) Response {
 	case "g":
 		return response
 	case "mg":
-		return Response{response.Result / 1000}
-	case "kg":
 		return Response{response.Result * 1000}
+	case "kg":
+		return Response{response.Result / 1000}
 	case "oz":
 		return Response{response.Result / 28.3495231}
 	case "pd":
@@ -111,11 +111,20 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error converting string to float:", err)
 		return
 	}
+	var result Response
 	conversionType := r.FormValue("conversionType")
-	fmt.Println(conversionType)
 	convertfrom := r.FormValue("from")
 	convertto := r.FormValue("to")
-	result := ConvertLength(Request{value, convertfrom, convertto})
+	fmt.Println(conversionType)
+	switch conversionType {
+	case "length":
+		result = ConvertLength(Request{value, convertfrom, convertto})
+	case "weight":
+		result = ConvertWeight(Request{value, convertfrom, convertto})
+		//case "":
+
+	}
+
 	fmt.Println(result)
 	fmt.Fprintf(w, "<h1>Length Conversion Result</h1>")
 	fmt.Fprintf(w, "<h2>Final result : %.3f %s\n</h2>", result.Result, convertto)
