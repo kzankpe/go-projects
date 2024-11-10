@@ -37,9 +37,10 @@
         <button onclick="showForm('temperatureForm')">Temperature Conversion</button>
     </div>
     <div id="lengthForm" class="conversion-form">
-        <h3>Lenght Conversion</h3>
+        <h3>Length Conversion</h3>
         <form action="/form" method="post">
-            <label for="">Value</label>
+            <input type = "hidden" name= "conversionType" value="length"></input>
+            <label for="lengthValue">Value</label>
             <input name="value" type="text">
             <br>
             <label for="from">Convert From</label>
@@ -72,6 +73,7 @@
     <div id="weightForm" class="conversion-form">
         <h3>Weight Conversion</h3>
         <form action="/form" method="post">
+            <input type = "hidden" name= "conversionType" value="weight"></input>
             <label for="weightValue">Value</label>
             <input name="value" type="text" id="weightValue" required>
             <br>
@@ -97,6 +99,7 @@
     <div id="temperatureForm" class="conversion-form">
         <h3>Temperature Conversion</h3>
         <form action="/form" method="post">
+            <input type = "hidden" name= "conversionType" value="temperature"></input>
             <label for="temperatureValue">Value</label>
             <input name="value" type="text" id="temperatureValue" required>
             <br>

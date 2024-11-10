@@ -111,6 +111,8 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error converting string to float:", err)
 		return
 	}
+	conversionType := r.FormValue("conversionType")
+	fmt.Println(conversionType)
 	convertfrom := r.FormValue("from")
 	convertto := r.FormValue("to")
 	result := ConvertLength(Request{value, convertfrom, convertto})
