@@ -4,12 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Converter</title>
+    <style>
+        .conversion-form {
+            display: none; /* Hide all forms by default */
+        }
+        .active {
+            display: block; /* Show the active form */
+        }
+    </style>
+    <script>
+        function showForm(formType) {
+            // Hide all forms
+            const forms = document.querySelectorAll('.conversion-form');
+            forms.forEach(form => form.classList.remove('active'));
+
+            // Show the selected form
+            const selectedForm = document.getElementById(formType);
+            selectedForm.classList.add('active');
+        }
+
+        // Show the length form by default
+        window.onload = function() {
+            showForm('lengthForm');
+        };
+    </script>
 </head>
 <body>
     <h2>Unit Converter</h2>
     <div>
+        <button onclick="showForm('lengthForm')">Length Conversion</button>
+        <button onclick="showForm('weightForm')">Weight Conversion</button>
+        <button onclick="showForm('temperatureForm')">Temperature Conversion</button>
+    </div>
+    <div id="lengthForm" class="conversion-form">
+        <h3>Length Conversion</h3>
         <form action="/form" method="post">
-            <label for="">Value</label>
+            <input type = "hidden" name= "conversionType" value="length"></input>
+            <label for="lengthValue">Value</label>
             <input name="value" type="text">
             <br>
             <label for="from">Convert From</label>
@@ -39,5 +70,58 @@
             <input type="submit" value="submit">
         </form>
     </div>
+    <div id="weightForm" class="conversion-form">
+        <h3>Weight Conversion</h3>
+        <form action="/form" method="post">
+            <input type = "hidden" name= "conversionType" value="weight"></input>
+            <label for="weightValue">Value</label>
+            <input name="value" type="text" id="weightValue" required>
+            <br>
+            <label for="weightFrom">Convert From</label>
+            <select name="from" id="weightFrom">
+                <option value="grams">grams</option>
+                <option value="kilograms">kilograms</option>
+                <option value="pounds">pounds</option>
+                <option value="ounces">ounces</option>
+            </select>
+            <br>
+            <label for="weightTo">Convert To</label>
+            <select name="to" id="weightTo">
+                <option value="grams">grams</option>
+                <option value="kilograms">kilograms</option>
+                <option value="pounds">pounds</option>
+                <option value="ounces">ounces</option>
+            </select>
+            <br>
+            <input type="submit" value="Convert">
+        </form>
+    </div>
+    <div id="temperatureForm" class="conversion-form">
+        <h3>Temperature Conversion</h3>
+        <form action="/form" method="post">
+            <input type = "hidden" name= "conversionType" value="temperature"></input>
+            <label for="temperatureValue">Value</label>
+            <input name="value" type="text" id="temperatureValue" required>
+            <br>
+            <label for="weightFrom">Convert From</label>
+            <select name="from" id="weightFrom">
+                <option value="grams">grams</option>
+                <option value="kilograms">kilograms</option>
+                <option value="pounds">pounds</option>
+                <option value="ounces">ounces</option>
+            </select>
+            <br>
+            <label for="weightTo">Convert To</label>
+            <select name="to" id="weightTo">
+                <option value="grams">grams</option>
+                <option value="kilograms">kilograms</option>
+                <option value="pounds">pounds</option>
+                <option value="ounces">ounces</option>
+            </select>
+            <br>
+            <input type="submit" value="Convert">
+        </form>
+    </div>
+        
 </body>
 </html>
