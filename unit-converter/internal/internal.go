@@ -128,13 +128,13 @@ func ConvertTemperature(r Request) Response {
 func FormHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		fmt.Println(err)
+		http.Error(w, "Unable to parse form", http.StatusBadRequest)
 		return
 	}
-	//fmt.Fprintf(w, "POST request successful\n")
+
 	value, err := strconv.ParseFloat(r.FormValue("value"), 64)
 	if err != nil {
-		fmt.Println("Error converting string to float:", err)
+		fmt.Fprintf(w, "<h3>Invalid input: %f is not a float\n</h3>", value)
 		return
 	}
 	var result Response
@@ -157,6 +157,6 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<h2>Final result : %.3f %s\n</h2>", result.Result, convertto)
 
 	// Add a button to go back to the home page
-	fmt.Fprintf(w, `<br><a href="/"> <button>Go Back to Home</button> </a>`)
+	fmt.Fprintf(w, `<br><a href="/"> <button>Reset</button> </a>`)
 
 }
