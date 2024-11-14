@@ -1,7 +1,16 @@
 package models
 
-// Define the model here 
+import "time"
 
-// Struct
+type UrlData struct {
+	ID         int       `json:"id"`
+	Url        string    `json:"url"`
+	Shortcode  string    `json:"shortCode"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdateddAt time.Time `json:"updated_at"`
+	Count      int       `json:"count"`
+}
 
-// Connection to the database
+type OriginalUrl struct {
+	OUrl string `json:"url" validate:"required,notBlank"`
+}
