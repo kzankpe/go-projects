@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kzankpe/go-projects/url-shortening/helpers"
 	"github.com/kzankpe/go-projects/url-shortening/models"
 )
 
@@ -25,7 +26,7 @@ func ShortenUrl(c *gin.Context) {
 	// Create url info
 	urldata := models.UrlData{
 		Url:        strings.ToLower(strings.TrimSpace(newUrl.OUrl)),
-		Shortcode:  "",
+		Shortcode:  helpers.GenerateShortCode(),
 		CreatedAt:  time.Now().UTC(),
 		UpdateddAt: time.Now().UTC(),
 	}

@@ -11,5 +11,10 @@ func InitRouter() *gin.Engine {
 }
 
 func SetRoute(route *gin.Engine) {
-	route.POST("/shorten", handlers.ShortenUrl)
+	// Create a group based on the endpiont version
+	v1 := route.Group("/v1")
+	{
+		v1.POST("/shorten", handlers.ShortenUrl)
+	}
+
 }
