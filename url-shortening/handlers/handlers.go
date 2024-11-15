@@ -16,6 +16,7 @@ func ShortenUrl(c *gin.Context) {
 	err := c.BindJSON(&newUrl)
 
 	if err != nil {
+		fmt.Println(err)
 		return //http.ErrBodyNotAllowed
 	}
 
@@ -32,5 +33,6 @@ func ShortenUrl(c *gin.Context) {
 	// Insert Information in the database
 
 	c.JSON(http.StatusCreated, gin.H{"Message": "Url Created"})
+
 	//return "Success"
 }
