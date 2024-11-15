@@ -1,21 +1,16 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/kzankpe/go-projects/url-shortening/routes"
+)
 
 func main() {
-	// Create a new router
-	router := gin.Default()
-
-	// Define a handler route for root
-	router.GET("/", func(ctx *gin.Context) {
-		// Send a Json response
-		ctx.JSON(200, gin.H{
-			"mesage": "Hello from Gin!",
-		})
-	})
+	// Initialize a router
+	r := routes.InitRouter()
+	routes.SetRoute(r)
 
 	// Run the server on a port
-	err := router.Run(":8090")
+	err := r.Run(":8090")
 	if err != nil {
 		panic(err)
 	}
