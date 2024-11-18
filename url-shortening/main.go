@@ -33,7 +33,7 @@ func main() {
 	// Connect to the Database
 	db, err := models.ConnectDB(config)
 	if err != nil {
-		log.Fatalf("Failed to connect to the databse %w", err)
+		log.Fatalf("Failed to connect to the databse %v", err)
 	}
 	err = db.AutoMigrate(&models.UrlData{})
 	if err != nil {
