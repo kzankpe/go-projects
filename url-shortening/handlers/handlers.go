@@ -11,7 +11,7 @@ import (
 	"github.com/kzankpe/go-projects/url-shortening/models"
 )
 
-func ShortenUrl(c *gin.Context) {
+func CreateShortenUrl(c *gin.Context) {
 	var newUrl models.OriginalUrl
 	// Retrieve the url information from the
 	err := c.BindJSON(&newUrl)
@@ -36,4 +36,14 @@ func ShortenUrl(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"Message": "Url Created"})
 
 	//return "Success"
+}
+
+func RetrieveShortenUrl(c *gin.Context) {
+	//Retrieve information from url
+	var short models.OriginalUrl
+	err := c.BindJSON(&short)
+	if err != nil {
+		fmt.Println(err)
+		return //http.ErrBodyNotAllowed
+	}
 }
