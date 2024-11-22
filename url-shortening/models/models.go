@@ -11,8 +11,8 @@ import (
 
 type UrlData struct {
 	ID         uint      `json:"id" gorm:"primaryKey"`
-	Url        string    `json:"url"`
-	Shortcode  string    `json:"shortCode"`
+	Url        string    `json:"url" gorm:"column:url"`
+	Shortcode  string    `json:"shortCode" gorm:"column:short_code;uniqueIndex"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdateddAt time.Time `json:"updated_at"`
 	Count      int       `json:"count"`

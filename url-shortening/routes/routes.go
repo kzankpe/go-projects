@@ -15,7 +15,7 @@ func SetRoute(route *gin.Engine) {
 	v1 := route.Group("/v1")
 	{
 		v1.POST("/shorten", handlers.CreateShortenUrl)
-		v1.GET("/shorten", handlers.RetrieveShortenUrl)
+		v1.GET("/shorten/:shortCode", handlers.RetrieveShortenUrl)
 	}
 
 }
