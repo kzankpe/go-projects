@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -40,10 +41,20 @@ func CreateShortenUrl(c *gin.Context) {
 
 func RetrieveShortenUrl(c *gin.Context) {
 	//Retrieve information from url
-	var short models.OriginalUrl
-	err := c.BindJSON(&short)
-	if err != nil {
-		fmt.Println(err)
-		return //http.ErrBodyNotAllowed
-	}
+	short := c.Param("shortcode")
+
+	// sqlDB, err := db.DB()
+	// if err != nil {
+	// 	log.Fatal("Failed to get DB instance:", err)
+	// }
+
+	// err = sqlDB.Ping()
+	// if err != nil {
+	// 	log.Fatal("Database connection is not alive:", err)
+	// }
+	// var urls models.UrlData
+	// err = db.Where().First(&urls, short).Error
+	// if err != nil {
+	// 	log.Fatal("Error fetching the url:", err)
+	// }
 }
