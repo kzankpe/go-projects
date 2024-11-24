@@ -22,6 +22,10 @@ type OriginalUrl struct {
 	OUrl string `json:"url" validate:"required,notBlank"`
 }
 
+type UrlRepository struct {
+	db *gorm.DB
+}
+
 func ConnectDB(conf config.Config) (*gorm.DB, error) {
 	connectionStr := fmt.Sprintf("host=%s user=%s dbname=%s password=%s port=%s sslmode=%s", conf.DBHost, conf.DBUserName, conf.DBName, conf.DBUserPass, conf.DBPort, conf.DBSslMode)
 
