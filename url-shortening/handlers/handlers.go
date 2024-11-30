@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -10,19 +9,26 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kzankpe/go-projects/url-shortening/helpers"
 	"github.com/kzankpe/go-projects/url-shortening/models"
+	"gorm.io/gorm"
 )
 
-func CreateShortenUrl(c *gin.Context) {
-	var newUrl models.OriginalUrl
-	// Retrieve the url information from the
-	err := c.BindJSON(&newUrl)
+type UrlController struct {
+	DB *gorm.DB
+}
 
+func NewUrlController(DB *gorm.DB) UrlController {
+	return UrlController{DB}
+}
+
+// Create short Url
+func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
+	var newUrl models.OriginalUrl
+	err := c.ShouldBindJSON(&newUrl)
 	if err != nil {
 		fmt.Println(err)
-		return //http.ErrBodyNotAllowed
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
 	}
-
-	// Use the validor function here before continuing
 
 	// Create url info
 	urldata := models.UrlData{
@@ -31,18 +37,19 @@ func CreateShortenUrl(c *gin.Context) {
 		CreatedAt:  time.Now().UTC(),
 		UpdateddAt: time.Now().UTC(),
 	}
-	fmt.Println(urldata) // To be remove
-	// Insert Information in the database
 
-	c.JSON(http.StatusCreated, gin.H{"Message": "Url Created"})
-
-	//return "Success"
+	result := uc.DB.Create(&urldata)
+	if result.Error != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"status": "error", "message": result.Error.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"status": "success", "data": urldata})
 }
 
 func RetrieveShortenUrl(c *gin.Context) {
 	//Retrieve information from url
 	short := c.Param("shortcode")
-
+	fmt.Println(short)
 	// sqlDB, err := db.DB()
 	// if err != nil {
 	// 	log.Fatal("Failed to get DB instance:", err)
