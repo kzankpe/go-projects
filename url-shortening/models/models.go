@@ -18,7 +18,7 @@ type UrlData struct {
 	Count      int       `json:"count"`
 }
 
-type OriginalUrl struct {
+type LongUrl struct {
 	OUrl string `json:"url" validate:"required,notBlank"`
 }
 

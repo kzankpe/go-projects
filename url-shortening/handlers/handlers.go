@@ -22,7 +22,7 @@ func NewUrlController(DB *gorm.DB) UrlController {
 
 // Create short Url
 func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
-	var newUrl models.OriginalUrl
+	var newUrl models.LongUrl
 	err := c.ShouldBindJSON(&newUrl)
 	if err != nil {
 		fmt.Println(err)
@@ -46,6 +46,7 @@ func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": "success", "data": urldata})
 }
 
+// Get short Url
 func RetrieveShortenUrl(c *gin.Context) {
 	//Retrieve information from url
 	short := c.Param("shortcode")
@@ -64,4 +65,32 @@ func RetrieveShortenUrl(c *gin.Context) {
 	// if err != nil {
 	// 	log.Fatal("Error fetching the url:", err)
 	// }
+}
+
+// Update ShortUrl
+func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
+	short := c.Param("shortcode")
+	var payload *models.LongUrl
+	err := c.ShouldBindJSON(&payload)
+	if err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": err.Error()})
+		return
+	}
+
+	var updatedUrl models.UrlData
+	result := uc.DB.First(&updatedUrl, "shortCode = ?", short)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
+		return
+	}
+	updatedInput := models.UrlData{
+		Url:        payload.OUrl,
+		Shortcode:  updatedUrl.Shortcode,
+		CreatedAt:  updatedUrl.CreatedAt,
+		UpdateddAt: time.Now().UTC(),
+	}
+
+	uc.DB.Model(&updatedUrl).Updates(updatedInput)
+
+	c.JSON(http.StatusOK, gin.H{"status": "success", "data": updatedUrl})
 }
