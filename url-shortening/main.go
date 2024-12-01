@@ -5,17 +5,24 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/kzankpe/go-projects/url-shortening/config"
+	"github.com/kzankpe/go-projects/url-shortening/handlers"
 	"github.com/kzankpe/go-projects/url-shortening/models"
 	"github.com/kzankpe/go-projects/url-shortening/routes"
 )
 
-func main() {
-	// Load environment variables from .env file
+var (
+	server             *gin.Engine
+	UrlController      handlers.UrlController
+	UrlRouteController routes.UrlRouteController
+)
+
+func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+		log.Fatalf("Could not load environment variables: %v", err)
 	}
 	// Database configuration from env
 	config := config.Config{
@@ -27,22 +34,31 @@ func main() {
 		DBSslMode:  os.Getenv("DB_SSLMODE"),
 	}
 
-	// Initialize a router
-	r := routes.InitRouter()
-	routes.SetRoute(r)
-	// Connect to the Database
 	db, err := models.ConnectDB(config)
 	if err != nil {
 		log.Fatalf("Failed to connect to the databse %v", err)
 	}
+
+	//Migrate database
 	err = db.AutoMigrate(&models.UrlData{})
 	if err != nil {
 		log.Fatalf("Error migrating the database: %v", err)
 	}
 	fmt.Println("Successfully connected to the database!")
 
+	UrlController = handlers.NewUrlController(db)
+	UrlRouteController = routes.NewRouteUrlController(UrlController)
+	//Initializing server
+	server = gin.Default()
+
+}
+
+func main() {
+	router := server.Group("")
+	//Add routes
+	UrlRouteController.UrlRoute(router)
 	// Run the server on a port
-	err = r.Run(":8090")
+	err := server.Run(":8090")
 	if err != nil {
 		panic(err)
 	}
