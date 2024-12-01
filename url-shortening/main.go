@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -54,7 +55,11 @@ func init() {
 }
 
 func main() {
-	router := server.Group("")
+	router := server.Group("/api")
+	router.GET("/healthcheck", func(c *gin.Context) {
+		message := "Welcome to Url Shortening service"
+		c.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
+	})
 	//Add routes
 	UrlRouteController.UrlRoute(router)
 	// Run the server on a port
