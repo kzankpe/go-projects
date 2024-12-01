@@ -17,6 +17,7 @@ func (urc *UrlRouteController) UrlRoute(rg *gin.RouterGroup) {
 	//router.Use(middleware.DeserializeUser())
 	router.POST("/shorten", urc.urlController.CreateShortenUrl)
 	router.PUT("/shorten/:shortcode", urc.urlController.UpdateShortenUrl)
+	router.DELETE("/shorten/:shortcode", urc.urlController.DeleteShortenUrl)
 }
 
 func InitRouter() *gin.Engine {

@@ -94,3 +94,12 @@ func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": "success", "data": updatedUrl})
 }
+
+func (uc *UrlController) DeleteShortenUrl(c *gin.Context) {
+	short := c.Param("shortcode")
+
+	result := uc.DB.Delete(&models.UrlData{}, "shortCode = ?", short)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that shortcode exists"})
+	}
+}
