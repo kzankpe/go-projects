@@ -16,20 +16,8 @@ func (urc *UrlRouteController) UrlRoute(rg *gin.RouterGroup) {
 	router := rg.Group("/v1")
 	//router.Use(middleware.DeserializeUser())
 	router.POST("/shorten", urc.urlController.CreateShortenUrl)
+	router.GET("/shorten/:shortcode", urc.urlController.RetrieveShortenUrl)
 	router.PUT("/shorten/:shortcode", urc.urlController.UpdateShortenUrl)
 	router.DELETE("/shorten/:shortcode", urc.urlController.DeleteShortenUrl)
 }
 
-func InitRouter() *gin.Engine {
-	router := gin.Default()
-	return router
-}
-
-func SetRoute(route *gin.Engine) {
-	// Create a group based on the endpiont version
-	v1 := route.Group("/v1")
-	{
-		v1.GET("/shorten/:shortCode", handlers.RetrieveShortenUrl)
-	}
-
-}

@@ -47,24 +47,16 @@ func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 }
 
 // Get short Url
-func RetrieveShortenUrl(c *gin.Context) {
-	//Retrieve information from url
+func (uc *UrlController) RetrieveShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
-	fmt.Println(short)
-	// sqlDB, err := db.DB()
-	// if err != nil {
-	// 	log.Fatal("Failed to get DB instance:", err)
-	// }
 
-	// err = sqlDB.Ping()
-	// if err != nil {
-	// 	log.Fatal("Database connection is not alive:", err)
-	// }
-	// var urls models.UrlData
-	// err = db.Where().First(&urls, short).Error
-	// if err != nil {
-	// 	log.Fatal("Error fetching the url:", err)
-	// }
+	var url models.UrlData
+	result := uc.DB.First(&url, "shortcode = ?", short)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "success", "data": url})
 }
 
 // Update ShortUrl
