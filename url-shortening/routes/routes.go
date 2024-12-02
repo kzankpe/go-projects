@@ -19,5 +19,5 @@ func (urc *UrlRouteController) UrlRoute(rg *gin.RouterGroup) {
 	router.GET("/shorten/:shortcode", urc.urlController.RetrieveShortenUrl)
 	router.PUT("/shorten/:shortcode", urc.urlController.UpdateShortenUrl)
 	router.DELETE("/shorten/:shortcode", urc.urlController.DeleteShortenUrl)
+	router.GET("/shorten/:shortcode/stats", urc.urlController.GetShortenUrlStat)
 }
-
