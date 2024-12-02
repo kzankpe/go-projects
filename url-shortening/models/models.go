@@ -25,7 +25,8 @@ type LongUrl struct {
 var DB *gorm.DB
 
 func ConnectDB(conf config.Config) (*gorm.DB, error) {
-	connectionStr := fmt.Sprintf("host=%s user=%s dbname=%s password=%s port=%s sslmode=%s", conf.DBHost, conf.DBUserName, conf.DBName, conf.DBUserPass, conf.DBPort, conf.DBSslMode)
+
+	connectionStr := fmt.Sprintf("host=%s user=%s dbname=%s password=%s port=%s", conf.DBHost, conf.DBUserName, conf.DBName, conf.DBUserPass, conf.DBPort)
 
 	db, err := gorm.Open(postgres.Open(connectionStr), &gorm.Config{})
 	if err != nil {
