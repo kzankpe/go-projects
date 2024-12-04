@@ -12,12 +12,16 @@ on:
       - 'url-shortening/**'
       - '.github/**'  
 
+env:
+  GOLANGCI_LINT_VERSION: latest
+
 jobs:
   version:
     runs-on: ubuntu-latest
     outputs:
       fullsemver: ${{ steps.get_version.outputs.fullSemVer }}
       semVer: ${{ steps.get_version.outputs.MajorMinorPatch }}
+      modules: ${{ steps.get-modules.outputs.modules }}
     steps:
       - uses: actions/checkout@v4
         name: Checkout
@@ -33,7 +37,23 @@ jobs:
         with:
           useConfigFile: true
           configFilePath: '.gitversion'
+      - id: get-modules
+        run: echo "modules=$(go list -m -json | jq -s '.' | jq -c '[.[].Dir]')" >> $GITHUB_OUTPUT
+        working-directory: url-shortening
+  golangci-lint:
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
 
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: ${{ env.GOLANGCI_LINT_VERSION}}
+          working-directory: url-shortening
   build:
     runs-on: ubuntu-latest
     needs: version
