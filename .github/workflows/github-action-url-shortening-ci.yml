@@ -1,15 +1,15 @@
 # This workflow will build a golang project
 
-name: Go-Unit-Converter
+name: Go-Url-Shortening
 
 on:
   push:
     paths:
       - '.github/**'
-      - 'unit-converter/**'
+      - 'url-shortening/**'
   pull_request:
     paths:
-      - 'unit-converter/**'
+      - 'url-shortening/**'
       - '.github/**'  
 
 jobs:
@@ -47,10 +47,10 @@ jobs:
           go-version: '1.23.x'
       - name: Install dependencies
         run: go get .
-        working-directory: unit-converter 
+        working-directory: url-shortening 
       - name: Build
-        run: go build -o unit-converter
-        working-directory: unit-converter
+        run: go build -o url-shortening
+        working-directory: url-shortening
       - name: Display current version
         run: |
           echo "Version env: ${{env.semVer}}"
