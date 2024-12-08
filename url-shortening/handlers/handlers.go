@@ -10,6 +10,7 @@ import (
 	"github.com/kzankpe/go-projects/url-shortening/helpers"
 	"github.com/kzankpe/go-projects/url-shortening/models"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type UrlController struct {
@@ -19,6 +20,8 @@ type UrlController struct {
 func NewUrlController(DB *gorm.DB) UrlController {
 	return UrlController{DB}
 }
+
+const req = "short_code = ?"
 
 // Create short Url
 func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
@@ -38,12 +41,19 @@ func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 		UpdateddAt: time.Now().UTC(),
 	}
 
-	result := uc.DB.Create(&urldata)
+	result := uc.DB.Create(&urldata).Clauses(clause.Returning{})
 	if result.Error != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"status": "error", "message": result.Error.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H{"status": "success", "data": urldata})
+	response := models.Response{
+		ID:         urldata.ID,
+		Url:        urldata.Url,
+		Shortcode:  urldata.Shortcode,
+		CreatedAt:  urldata.CreatedAt,
+		UpdateddAt: urldata.UpdateddAt,
+	}
+	c.JSON(http.StatusCreated, gin.H{"id": response.ID, "url": response.Url, "shortcode": response.Shortcode, "created_at": response.CreatedAt, "updated_at": response.UpdateddAt})
 }
 
 // Get short Url
@@ -51,7 +61,7 @@ func (uc *UrlController) RetrieveShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 
 	var url models.UrlData
-	result := uc.DB.First(&url, "shortcode = ?", short)
+	result := uc.DB.First(&url, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
 		return
@@ -70,7 +80,7 @@ func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 	}
 
 	var updatedUrl models.UrlData
-	result := uc.DB.First(&updatedUrl, "shortCode = ?", short)
+	result := uc.DB.First(&updatedUrl, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
 		return
@@ -90,16 +100,17 @@ func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 func (uc *UrlController) DeleteShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 
-	result := uc.DB.Delete(&models.UrlData{}, "shortCode = ?", short)
+	result := uc.DB.Delete(&models.UrlData{}, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that shortcode does not exists"})
 	}
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 
 func (uc *UrlController) GetShortenUrlStat(c *gin.Context) {
 	short := c.Param("shortcode")
 	var url models.UrlData
-	result := uc.DB.First(&url, "shortCode = ?", short)
+	result := uc.DB.First(&url, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that shortcode does not exists"})
 	}

@@ -22,6 +22,14 @@ type LongUrl struct {
 	OUrl string `json:"url" validate:"required,notBlank"`
 }
 
+type Response struct {
+	ID         uint      `json:"id"`
+	Url        string    `json:"url"`
+	Shortcode  string    `json:"shortCode"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdateddAt time.Time `json:"updated_at"`
+}
+
 var DB *gorm.DB
 
 func ConnectDB(conf config.Config) (*gorm.DB, error) {
