@@ -66,6 +66,12 @@ func (uc *UrlController) RetrieveShortenUrl(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
 		return
 	}
+	// Increment the count
+	url.Count++
+	result = uc.DB.Save(&url)
+	if result.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "fail", "message": "Internal server Error"})
+	}
 	c.JSON(http.StatusOK, gin.H{"status": "success", "data": url})
 }
 
@@ -114,5 +120,6 @@ func (uc *UrlController) GetShortenUrlStat(c *gin.Context) {
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that shortcode does not exists"})
 	}
+	c.JSON(http.StatusOK, gin.H{"status": "success", "data": url})
 
 }
