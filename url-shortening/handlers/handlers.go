@@ -21,6 +21,8 @@ func NewUrlController(DB *gorm.DB) UrlController {
 	return UrlController{DB}
 }
 
+const req = "short_code = ?"
+
 // Create short Url
 func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 	var newUrl models.LongUrl
@@ -59,7 +61,7 @@ func (uc *UrlController) RetrieveShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 
 	var url models.UrlData
-	result := uc.DB.First(&url, "short_code = ?", short)
+	result := uc.DB.First(&url, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
 		return
@@ -78,7 +80,7 @@ func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 	}
 
 	var updatedUrl models.UrlData
-	result := uc.DB.First(&updatedUrl, "short_code = ?", short)
+	result := uc.DB.First(&updatedUrl, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that Shortcode exists"})
 		return
@@ -98,7 +100,7 @@ func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 func (uc *UrlController) DeleteShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 
-	result := uc.DB.Delete(&models.UrlData{}, "short_code = ?", short)
+	result := uc.DB.Delete(&models.UrlData{}, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that shortcode does not exists"})
 	}
@@ -108,7 +110,7 @@ func (uc *UrlController) DeleteShortenUrl(c *gin.Context) {
 func (uc *UrlController) GetShortenUrlStat(c *gin.Context) {
 	short := c.Param("shortcode")
 	var url models.UrlData
-	result := uc.DB.First(&url, "short_code = ?", short)
+	result := uc.DB.First(&url, req, short)
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that shortcode does not exists"})
 	}
