@@ -1,0 +1,118 @@
+basePath: /api/v1
+definitions:
+  models.LongUrl:
+    properties:
+      url:
+        type: string
+    required:
+    - url
+    type: object
+  models.UrlData:
+    properties:
+      count:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      shortCode:
+        type: string
+      updated_at:
+        type: string
+      url:
+        type: string
+    type: object
+info:
+  contact:
+    name: kzankpe
+    url: https://github.com/kzankpe
+  description: A simple RESTful API that allows users to shorten long URLs
+  title: Shorten Url Service
+  version: "1.0"
+paths:
+  /shorten:
+    post:
+      consumes:
+      - application/json
+      description: Create new short url
+      parameters:
+      - description: Long Url
+        in: body
+        name: url
+        required: true
+        schema:
+          $ref: '#/definitions/models.LongUrl'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create new short url
+      tags:
+      - Shortening URL
+  /shorten/{shortcode}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete  short url
+      parameters:
+      - description: Short Code
+        in: path
+        name: shortcode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete  short url
+      tags:
+      - Shortening URL
+    get:
+      consumes:
+      - application/json
+      description: Retrieve  short url
+      parameters:
+      - description: Short Code
+        in: path
+        name: shortcode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Retrieve  short url
+      tags:
+      - Shortening URL
+    put:
+      consumes:
+      - application/json
+      description: Update  short url
+      parameters:
+      - description: Short Code
+        in: body
+        name: shortcode
+        required: true
+        schema:
+          $ref: '#/definitions/models.UrlData'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update  short url
+      tags:
+      - Shortening URL
+  /shorten/{shortcode}/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get  short url statistics
+      parameters:
+      - description: Short Code
+        in: path
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Get   short url stats
+      tags:
+      - Shortening URL
+swagger: "2.0"

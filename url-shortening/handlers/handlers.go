@@ -24,6 +24,18 @@ func NewUrlController(DB *gorm.DB) UrlController {
 const req = "short_code = ?"
 
 // Create short Url
+// CreateShortUrl	godoc
+//
+//	@Summary		Create new short url
+//	@Description	Create new short url
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Shortening URL
+//	@Param			url	body	models.LongUrl	true	"Long Url"
+//
+//	@Sucess			200 {object} models.Response
+//
+//	@Router			/shorten [post]
 func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 	var newUrl models.LongUrl
 	err := c.ShouldBindJSON(&newUrl)
@@ -34,6 +46,7 @@ func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 	}
 
 	// Create url info
+
 	urldata := models.UrlData{
 		Url:        strings.ToLower(strings.TrimSpace(newUrl.OUrl)),
 		Shortcode:  helpers.GenerateShortCode(),
@@ -46,17 +59,29 @@ func (uc *UrlController) CreateShortenUrl(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, gin.H{"status": "error", "message": result.Error.Error()})
 		return
 	}
-	response := models.Response{
-		ID:         urldata.ID,
-		Url:        urldata.Url,
-		Shortcode:  urldata.Shortcode,
-		CreatedAt:  urldata.CreatedAt,
-		UpdateddAt: urldata.UpdateddAt,
-	}
-	c.JSON(http.StatusCreated, gin.H{"id": response.ID, "url": response.Url, "shortcode": response.Shortcode, "created_at": response.CreatedAt, "updated_at": response.UpdateddAt})
+	// response := models.Response{
+	// 	ID:         urldata.ID,
+	// 	Url:        urldata.Url,
+	// 	Shortcode:  urldata.Shortcode,
+	// 	CreatedAt:  urldata.CreatedAt,
+	// 	UpdateddAt: urldata.UpdateddAt,
+	// }
+	//c.JSON(http.StatusCreated, gin.H{"id": response.ID, "url": response.Url, "shortcode": response.Shortcode, "created_at": response.CreatedAt, "updated_at": response.UpdateddAt})
+	c.JSON(http.StatusCreated, models.Response{Data: urldata})
 }
 
 // Get short Url
+//
+//	@Summary		Retrieve  short url
+//	@Description	Retrieve  short url
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Shortening URL
+//	@Param			shortcode	path	string	true	"Short Code"
+//
+//	@Sucess			200 {object} models.Response
+//
+//	@Router			/shorten/{shortcode} [get]
 func (uc *UrlController) RetrieveShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 
@@ -76,6 +101,17 @@ func (uc *UrlController) RetrieveShortenUrl(c *gin.Context) {
 }
 
 // Update ShortUrl
+//
+//	@Summary		Update  short url
+//	@Description	Update  short url
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Shortening URL
+//	@Param			shortcode		body	models.UrlData	true	"Short Code"
+//
+//	@Sucess			200 {object} 	models.Response{}
+//
+//	@Router			/shorten/{shortcode} [put]
 func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 	var payload *models.LongUrl
@@ -103,6 +139,16 @@ func (uc *UrlController) UpdateShortenUrl(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "success", "data": updatedUrl})
 }
 
+//	@Summary		Delete  short url
+//	@Description	Delete  short url
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Shortening URL
+//	@Param			shortcode	path	string	true	"Short Code"
+//
+//	@Sucess			200 {object} models.Response{}
+//
+//	@Router			/shorten/{shortcode} [delete]
 func (uc *UrlController) DeleteShortenUrl(c *gin.Context) {
 	short := c.Param("shortcode")
 
@@ -113,6 +159,16 @@ func (uc *UrlController) DeleteShortenUrl(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 
+//	@Summary		Get   short url stats
+//	@Description	Get  short url statistics
+//	@Accept			json
+//	@Produce		json
+//	@Tags			Shortening URL
+//	@Param			url	path	string	true	"Short Code"
+//
+//	@Sucess			200 {object} models.Response{}
+//
+//	@Router			/shorten/{shortcode}/stats [get]
 func (uc *UrlController) GetShortenUrlStat(c *gin.Context) {
 	short := c.Param("shortcode")
 	var url models.UrlData

@@ -9,9 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/kzankpe/go-projects/url-shortening/config"
+	_ "github.com/kzankpe/go-projects/url-shortening/docs"
 	"github.com/kzankpe/go-projects/url-shortening/handlers"
 	"github.com/kzankpe/go-projects/url-shortening/models"
 	"github.com/kzankpe/go-projects/url-shortening/routes"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var (
@@ -54,12 +57,20 @@ func init() {
 
 }
 
+//	@title			Shorten Url Service
+//	@version		1.0
+//	@description	A simple RESTful API that allows users to shorten long URLs
+//	@version		1.0
+//	@contact.name	kzankpe
+//	@contact.url	https://github.com/kzankpe
+//	@BasePath		/api/v1
 func main() {
 	router := server.Group("/api")
 	router.GET("/healthcheck", func(c *gin.Context) {
 		message := "Welcome to Url Shortening service"
 		c.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
 	})
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	//Add routes
 	UrlRouteController.UrlRoute(router)
 	// Run the server on a port
