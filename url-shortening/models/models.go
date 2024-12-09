@@ -23,11 +23,7 @@ type LongUrl struct {
 }
 
 type Response struct {
-	ID         uint      `json:"id"`
-	Url        string    `json:"url"`
-	Shortcode  string    `json:"shortCode"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpdateddAt time.Time `json:"updated_at"`
+	Data UrlData `json:"data"`
 }
 
 var DB *gorm.DB
