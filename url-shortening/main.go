@@ -57,19 +57,29 @@ func init() {
 
 }
 
-//	@title			Shorten Url Service
-//	@version		1.0
-//	@description	A simple RESTful API that allows users to shorten long URLs
-//	@version		1.0
-//	@contact.name	kzankpe
-//	@contact.url	https://github.com/kzankpe
-//	@BasePath		/api/v1
+// @title			Shorten Url Service
+// @version		1.0
+// @description	A simple RESTful API that allows users to shorten long URLs
+// @version		1.0
+// @contact.name	kzankpe
+// @contact.url	https://github.com/kzankpe
+// @BasePath		/api/v1
 func main() {
+	//Redirect to the home page
+	server.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusFound, "/api/")
+	})
 	router := server.Group("/api")
 	router.GET("/healthcheck", func(c *gin.Context) {
 		message := "Welcome to Url Shortening service"
 		c.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
 	})
+	// Add Home page
+	router.GET("/", func(c *gin.Context) {
+		message := "Welcome to the Service. This API provides endpoints to create, retrieve, update, and delete short URLs"
+		c.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
+	})
+	// Add Swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	//Add routes
 	UrlRouteController.UrlRoute(router)
