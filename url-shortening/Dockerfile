@@ -25,11 +25,20 @@ RUN go build -o main .
 # Start a new stage from scratch using a specific image version
 FROM alpine:3.21 
 
+# Create a non-root user and group
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 # Set the Current Working Directory inside the container
 WORKDIR /root/
 
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .
+
+# Change ownership of the application to the non-root user
+RUN chown appuser:appgroup main
+
+# Switch to the non-root user
+USER appuser
 
 # Expose port 8090 to the outside world
 EXPOSE 8090
