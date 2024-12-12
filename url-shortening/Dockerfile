@@ -11,13 +11,19 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Copy the source code into the container
-COPY . .
+COPY ./config /config
+COPY ./docs /docs
+COPY ./handlers /handlers
+COPY ./models /models
+COPY ./routes /routes
+COPY ./main.go /
+
 
 # Build the Go app
 RUN go build -o main .
 
-# Start a new stage from scratch
-FROM alpine:latest
+# Start a new stage from scratch using a specific image version
+FROM alpine:3.21 
 
 # Set the Current Working Directory inside the container
 WORKDIR /root/
