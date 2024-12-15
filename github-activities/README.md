@@ -8,7 +8,7 @@ The application should run from the command line, accept the GitHub username as 
 
 ## Features
 
-This recent activities of a user.
+List recent activities of a user.
 
 ## Installation
 
