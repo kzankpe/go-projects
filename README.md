@@ -8,6 +8,7 @@ Solution for each project is in the respective folder. The folder name is the sa
 
 - [GitHub User Activity](https://roadmap.sh/projects/github-user-activity)
 - [Unit Converter](https://roadmap.sh/projects/unit-converter)
+- [TMDB CLI Tool](https://roadmap.sh/projects/tmdb-cli)
 
 ## Intermediate
 - [Url Shortening Service](https://roadmap.sh/projects/url-shortening-service)
