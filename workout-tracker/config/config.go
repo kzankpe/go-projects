@@ -6,6 +6,4 @@ type Config struct {
 	DBUserPass string
 	DBName     string
 	DBPort     string
-	DBSslMode  string
 }
-

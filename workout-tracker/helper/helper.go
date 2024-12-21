@@ -1,6 +1,10 @@
 package helper
 
-func HashPassword(){}
+func HashPassword(){
+	//function to hash password
+}
 
-func VerifyPassword(){}
+func VerifyPassword(){
+	// function to verify password
+}
 

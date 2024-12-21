@@ -23,7 +23,6 @@ func init() {
 		DBUserPass: os.Getenv("DB_PASSWORD"),
 		DBName:     os.Getenv("DB_NAME"),
 		DBPort:     os.Getenv("DB_PORT"),
-		DBSslMode:  os.Getenv("DB_SSLMODE"),
 	}
 	db, err := models.ConnectDB(config)
 	if err != nil {
@@ -34,10 +33,10 @@ func init() {
 	if err != nil {
 		log.Fatalf("Error migrating the database: %v", err)
 	}
-	fmt.Println("Successfully connected to the database!")
+	fmt.Println("Successfully connected to the postgresql database!")
 
 }
 
 func main() {
-
+	//main function
 }

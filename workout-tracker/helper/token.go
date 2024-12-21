@@ -1,4 +1,6 @@
 package helper
 
 // Generate Jwt
-func GenerateToken() {}
+func GenerateToken() {
+	//function to generate jwt
+}
