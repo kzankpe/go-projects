@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+
 	"github.com/kzankpe/go-projects/workout-tracker/config"
 	"github.com/kzankpe/go-projects/workout-tracker/models"
 )
@@ -17,14 +18,14 @@ func init() {
 	}
 
 	// Database configuration
-	config := config.Config{
+	conf := config.Config{
 		DBHost:     os.Getenv("DB_HOST"),
 		DBUserName: os.Getenv("DB_USER"),
 		DBUserPass: os.Getenv("DB_PASSWORD"),
 		DBName:     os.Getenv("DB_NAME"),
 		DBPort:     os.Getenv("DB_PORT"),
 	}
-	db, err := models.ConnectDB(config)
+	db, err := config.ConnectDB(conf)
 	if err != nil {
 		log.Fatalf("Failed to connect to the databse %v", err)
 	}
