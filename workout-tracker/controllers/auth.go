@@ -70,4 +70,30 @@ func (ac *AuthController) SignUpUser(c *gin.Context) {
 
 func (ac *AuthController) SignInUser(c *gin.Context) {
 	//SignIn logic
+
+	var payload *models.SignInInput
+	var user models.User
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": err.Error()})
+		return
+	}
+	result := ac.DB.First(&user, "email=?", strings.ToLower(payload.Email))
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid email or Password"})
+		return
+	}
+	err := helper.VerifyPassword(user.Password, payload.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid email or Password"})
+		return
+	}
+	// load config
+
+	//Generate token
+	token, err := helper.GenerateToken(24, user.ID, "") // update the ttl value to make it dynamic and get the information from the user
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid email or Password"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "success", "token": token})
 }
