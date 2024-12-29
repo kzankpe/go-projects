@@ -3,12 +3,22 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
 	"github.com/kzankpe/go-projects/workout-tracker/config"
+	"github.com/kzankpe/go-projects/workout-tracker/controllers"
 	"github.com/kzankpe/go-projects/workout-tracker/models"
+	"github.com/kzankpe/go-projects/workout-tracker/routes"
+)
+
+var (
+	server              *gin.Engine
+	AuthController      controllers.AuthController
+	AuthRouteController routes.AuthRouteController
 )
 
 func init() {
@@ -40,4 +50,15 @@ func init() {
 
 func main() {
 	//main function
+	router := server.Group("/api")
+	router.GET("/healthcheck", func(c *gin.Context) {
+		message := "Welcome to Url Shortening service"
+		c.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
+	})
+	AuthRouteController.AuthRoute(router)
+	// Run the server
+	err := server.Run(":8090")
+	if err != nil {
+		panic(err)
+	}
 }
