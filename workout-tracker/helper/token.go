@@ -32,3 +32,9 @@ func GenerateToken(ttl time.Duration, payload interface{}, privateKey string) (s
 	}
 	return token, nil
 }
+
+// Validate JWT
+func ValidateJWT(tokenInput string, privateKey string) (interface{}, error) {
+
+	return "fkd", nil
+}
