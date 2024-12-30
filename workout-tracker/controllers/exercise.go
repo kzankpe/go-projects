@@ -40,6 +40,10 @@ func (ec *ExerciseController) CreateExercise(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": "success", "data": gin.H{"exercise": "created"}})
 }
 
-func (ec *ExerciseController) UpdateExercise(c *gin.Context) {}
+func (ec *ExerciseController) UpdateExercise(c *gin.Context) {
+	// update an existing exercise in the database
+}
 
-func (ec *ExerciseController) DeleteExercise(c *gin.Context) {}
+func (ec *ExerciseController) DeleteExercise(c *gin.Context) {
+	// Delete exercise from database
+}
