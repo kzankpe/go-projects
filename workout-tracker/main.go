@@ -16,9 +16,11 @@ import (
 )
 
 var (
-	server              *gin.Engine
-	AuthController      controllers.AuthController
-	AuthRouteController routes.AuthRouteController
+	server                  *gin.Engine
+	AuthController          controllers.AuthController
+	AuthRouteController     routes.AuthRouteController
+	ExerciseController      controllers.ExerciseController
+	ExerciseRouteController routes.ExerciseRouteController
 )
 
 func init() {
@@ -56,6 +58,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
 	})
 	AuthRouteController.AuthRoute(router)
+	ExerciseRouteController.ExerciseRoute(router)
 	// Run the server
 	err := server.Run(":8090")
 	if err != nil {

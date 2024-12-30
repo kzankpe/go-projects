@@ -57,7 +57,7 @@ func (ac *AuthController) SignUpUser(c *gin.Context) {
 	}
 
 	userResponse := models.UserResponse{
-		ID:        newUser.ID,
+		//ID:        newUser.ID,
 		Name:      newUser.Name,
 		Email:     newUser.Email,
 		CreatedAt: newUser.CreatedAt,
