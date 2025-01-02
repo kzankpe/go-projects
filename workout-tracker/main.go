@@ -21,6 +21,8 @@ var (
 	AuthRouteController     routes.AuthRouteController
 	ExerciseController      controllers.ExerciseController
 	ExerciseRouteController routes.ExerciseRouteController
+	WorkoutController       controllers.WorkoutController
+	WorkoutRouteController  routes.WorkoutRouteController
 )
 
 func init() {
@@ -59,6 +61,7 @@ func main() {
 	})
 	AuthRouteController.AuthRoute(router)
 	ExerciseRouteController.ExerciseRoute(router)
+	WorkoutRouteController.WorkoutRoute(router)
 	// Run the server
 	err := server.Run(":8090")
 	if err != nil {
