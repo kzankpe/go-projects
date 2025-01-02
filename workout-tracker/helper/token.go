@@ -36,5 +36,19 @@ func GenerateToken(ttl time.Duration, payload interface{}, privateKey string) (s
 // Validate JWT
 func ValidateJWT(tokenInput string, privateKey string) (interface{}, error) {
 
-	return "fkd", nil
+	token, err := jwt.Parse(tokenInput, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodRSA); !ok {
+			return nil, fmt.Errorf("unexpected method: %s", t.Header["alg"])
+		}
+		return privateKey, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, fmt.Errorf("validate: invalid token")
+	}
+	return claims["sub"], nil
 }
