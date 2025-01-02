@@ -37,8 +37,11 @@ func AuthMiddleware() gin.HandlerFunc {
 		// Verify the userId in the database
 		var user models.User
 		result := config.DB.First(&user, "id= ? ", fmt.Sprint(userId))
-		if result.Error !=nil {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"status": "fail", "message": "the user belonging to this token do not exist"})
+		if result.Error != nil {
+			c.AbortWithStatusJSON(
+				http.StatusForbidden,
+				gin.H{"status": "fail", "message": `the user belonging to this token do not exist`},
+			)
 			return
 		}
 		c.Set("currentUser", userId)
