@@ -6,7 +6,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kzankpe/go-projects/workout-tracker/config"
 	"github.com/kzankpe/go-projects/workout-tracker/helper"
+	"github.com/kzankpe/go-projects/workout-tracker/models"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -33,9 +35,12 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 		fmt.Println(userId)
 		// Verify the userId in the database
-		//var user models.User
-		//result :=
-
+		var user models.User
+		result := config.DB.First(&user, "id= ? ", fmt.Sprint(userId))
+		if result.Error !=nil {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"status": "fail", "message": "the user belonging to this token do not exist"})
+			return
+		}
 		c.Set("currentUser", userId)
 		c.Next()
 	}
