@@ -8,7 +8,7 @@ type Workout struct {
 	Name         string
 	Description  string
 	ScheduledFor time.Time
-	//Exercises []Exercises
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	//Exercises    []Exercise
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
 }
