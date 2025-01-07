@@ -1,0 +1,77 @@
+# This workflow will build a golang project
+
+name: Go-Workout-Tracker
+
+on:
+  push:
+    paths:
+      - '.github/**'
+      - 'workout-tracker/**'
+  pull_request:
+    paths:
+      - 'workout-tracker/**'
+      - '.github/**'  
+
+env:
+  GOLANGCI_LINT_VERSION: latest
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      fullsemver: ${{ steps.get_version.outputs.fullSemVer }}
+      semVer: ${{ steps.get_version.outputs.MajorMinorPatch }}
+      modules: ${{ steps.get-modules.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          fetch-depth: 0
+      - uses: gittools/actions/gitversion/setup@v0
+        name: Install Giversion 5.x
+        with:
+          versionSpec: '5.x'
+      - uses: gittools/actions/gitversion/execute@v0
+        id: get_version
+        name: Determine Version
+        with:
+          useConfigFile: true
+          configFilePath: '.gitversion'
+      - id: get-modules
+        run: echo "modules=$(go list -m -json | jq -s '.' | jq -c '[.[].Dir]')" >> $GITHUB_OUTPUT
+        working-directory: workout-tracker
+  golangci-lint:
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: ${{ env.GOLANGCI_LINT_VERSION}}
+          working-directory: workout-tracker
+  build:
+    runs-on: ubuntu-latest
+    needs: version
+    env:
+      semVer: ${{ needs.version.outputs.semVer }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v4
+        name: Set up Go
+        with:
+          go-version: '1.23.x'
+      - name: Install dependencies
+        run: go get .
+        working-directory: workout-tracker 
+      - name: Build
+        run: go build -o workout-tracker
+        working-directory: workout-tracker
+      - name: Display current version
+        run: |
+          echo "Version env: ${{env.semVer}}"
+          echo "Version local: ${{ needs.version.outputs.semVer }}"
