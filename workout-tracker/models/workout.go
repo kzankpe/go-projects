@@ -1,14 +1,16 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Workout struct {
-	ID           int
+	gorm.Model
 	UserId       int
 	Name         string
 	Description  string
 	ScheduledFor time.Time
 	//Exercises    []Exercise
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
 }
