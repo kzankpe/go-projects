@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kzankpe/go-projects/workout-tracker/models"
@@ -31,8 +30,6 @@ func (wc *WorkoutController) CreateWorkout(c *gin.Context) {
 		Name:         payload.Name,
 		Description:  payload.Description,
 		ScheduledFor: payload.ScheduledFor,
-		CreatedAt:    time.Now(),
-		UpdatedAt:    time.Now(),
 	}
 
 	result := wc.DB.Create(&newWorkout)
@@ -48,4 +45,11 @@ func (wc *WorkoutController) UpdateWorkout(c *gin.Context) {
 
 func (wc *WorkoutController) DeleteWorkout(c *gin.Context) {
 	//delete workout
+	workoutId := c.Param("workoutid")
+
+	result := wc.DB.Delete(&models.Workout{}, "primaryKey = ?", workoutId)
+	if result.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": "No record with that workoutId does not exists"})
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
