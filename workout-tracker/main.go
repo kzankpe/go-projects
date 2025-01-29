@@ -49,7 +49,9 @@ func init() {
 		log.Fatalf("Error migrating the database: %v", err)
 	}
 	fmt.Println("Successfully connected to the postgresql database!")
-
+	//Initializing server
+	server = gin.Default()
+	fmt.Println("Successfully initialize the server ....")
 }
 
 func main() {
@@ -62,6 +64,7 @@ func main() {
 	AuthRouteController.AuthRoute(router)
 	ExerciseRouteController.ExerciseRoute(router)
 	WorkoutRouteController.WorkoutRoute(router)
+
 	// Run the server
 	err := server.Run(":8090")
 	if err != nil {
