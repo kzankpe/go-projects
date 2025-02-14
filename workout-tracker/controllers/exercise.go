@@ -16,6 +16,9 @@ func NewExerciseController(DB *gorm.DB) ExerciseController {
 	return ExerciseController{DB}
 }
 
+//	@Tags			Exercises
+//
+// @Router			/exercises [post]
 func (ec *ExerciseController) CreateExercise(c *gin.Context) {
 	var payload *models.UserExerciseInput
 
@@ -40,10 +43,16 @@ func (ec *ExerciseController) CreateExercise(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": "success", "data": gin.H{"exercise": "created"}})
 }
 
+//	@Tags			Exercises
+//
+// @Router			/exercises [put]
 func (ec *ExerciseController) UpdateExercise(c *gin.Context) {
 	// update an existing exercise in the database
 }
 
+//	@Tags			Exercises
+//
+// @Router			/exercises [delete]
 func (ec *ExerciseController) DeleteExercise(c *gin.Context) {
 	// Delete exercise from database
 }

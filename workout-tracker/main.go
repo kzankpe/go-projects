@@ -8,11 +8,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-
 	"github.com/kzankpe/go-projects/workout-tracker/config"
 	"github.com/kzankpe/go-projects/workout-tracker/controllers"
+	_ "github.com/kzankpe/go-projects/workout-tracker/docs"
 	"github.com/kzankpe/go-projects/workout-tracker/models"
 	"github.com/kzankpe/go-projects/workout-tracker/routes"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var (
@@ -54,6 +56,16 @@ func init() {
 	fmt.Println("Successfully initialize the server ....")
 }
 
+// @title			Workout Tracker Service
+// @version		1.0
+// @description	A simple Service using RESTful API that allows users to track their workouts
+// @version		1.0
+// @contact.name	kzankpe
+// @contact.url	https://github.com/kzankpe
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @BasePath		/api/v1
 func main() {
 	//main function
 	router := server.Group("/api")
@@ -64,6 +76,8 @@ func main() {
 	AuthRouteController.AuthRoute(router)
 	ExerciseRouteController.ExerciseRoute(router)
 	WorkoutRouteController.WorkoutRoute(router)
+	// Add Swagger
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// Run the server
 	err := server.Run(":8090")

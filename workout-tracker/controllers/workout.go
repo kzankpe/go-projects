@@ -16,6 +16,18 @@ func NewWorkoutController(DB *gorm.DB) WorkoutController {
 	return WorkoutController{DB}
 }
 
+// CreateWorkout godoc
+// @Summary Create a new workout
+// @Description Create new workout plan with the details provided
+//
+//	@Tags			Workouts
+//
+// @Schemes
+// @Accept json
+// @Produce json
+// @Failure 400 {object} gin.H "Invalid input"
+// @Security BearerAuth
+// @Router			/workouts [post]
 func (wc *WorkoutController) CreateWorkout(c *gin.Context) {
 	//function to create workout
 
@@ -39,10 +51,17 @@ func (wc *WorkoutController) CreateWorkout(c *gin.Context) {
 	}
 }
 
+//	@Tags			Workouts
+//
+// @Schemes
+// @Router			/workouts [put]
 func (wc *WorkoutController) UpdateWorkout(c *gin.Context) {
 	//update workout
 }
 
+//	@Tags			Workouts
+//
+// @Router			/workouts [delete]
 func (wc *WorkoutController) DeleteWorkout(c *gin.Context) {
 	//delete workout
 	workoutId := c.Param("workoutid")

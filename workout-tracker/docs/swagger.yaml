@@ -1,0 +1,39 @@
+basePath: /api/v1
+info:
+  contact:
+    name: kzankpe
+    url: https://github.com/kzankpe
+  description: A simple Service using RESTful API that allows users to track their
+    workouts
+  title: Workout Tracker Service
+  version: "1.0"
+paths:
+  /exercises:
+    delete:
+      responses: {}
+      tags:
+      - Exercises
+    post:
+      responses: {}
+      tags:
+      - Exercises
+    put:
+      responses: {}
+      tags:
+      - Exercises
+  /workouts:
+    delete:
+      responses: {}
+      tags:
+      - Workouts
+    post:
+      consumes:
+      - application/json
+      responses: {}
+      tags:
+      - Workouts
+    put:
+      responses: {}
+      tags:
+      - Workouts
+swagger: "2.0"

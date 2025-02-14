@@ -1,0 +1,58 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A simple Service using RESTful API that allows users to track their workouts",
+        "title": "Workout Tracker Service",
+        "contact": {
+            "name": "kzankpe",
+            "url": "https://github.com/kzankpe"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/exercises": {
+            "put": {
+                "tags": [
+                    "Exercises"
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Exercises"
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Exercises"
+                ],
+                "responses": {}
+            }
+        },
+        "/workouts": {
+            "put": {
+                "tags": [
+                    "Workouts"
+                ],
+                "responses": {}
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Workouts"
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Workouts"
+                ],
+                "responses": {}
+            }
+        }
+    }
+}

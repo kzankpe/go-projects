@@ -15,7 +15,7 @@ func NewWorkoutRouteController(workoutController controllers.WorkoutController) 
 }
 
 func (wrc *WorkoutRouteController) WorkoutRoute(rg *gin.RouterGroup) {
-	router := rg.Group("/workout", middleware.AuthMiddleware())
+	router := rg.Group("/workouts", middleware.AuthMiddleware())
 	router.POST("/create", wrc.WorkoutController.CreateWorkout)
 	router.PUT("/:workoutid", wrc.WorkoutController.UpdateWorkout)
 	router.DELETE("/:workoutid", wrc.WorkoutController.DeleteWorkout)
