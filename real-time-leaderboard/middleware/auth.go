@@ -26,7 +26,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": "failed", "message": "Missing authorization header"})
 		}
 		// Verify the Token
-		fmt.Println(accessToken) // To discard var unused error TODO
+		fmt.Println(accessToken) // To discard var unused error
 		// Verifiy the user in the database
 
 	}
